@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="keyword" content="blog, user blog, personal blog">
+  <meta name="description" content="personal blog posts">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="blog.css">
+  <title>Homki's Blog</title>
+</head>
+
+<body>
+  <div id="nav">
+    <img id="logo" style="float: left;" src="../assets/logo.svg" alt="logo triangels in circle">
+    <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a class="active" href="blog.html">Blog</a></li>      
+      <li><a href="../index.html#technology">Wiki</a></li>
+      <li><a href="https://github.com/green-fox-academy/HomkiSvk" target="_blank">Github</a></li>
+      <li><a href="https://www.linkedin.com/in/martin-novosedl%C3%ADk-2972a198/" target="_blank">LinkedIn</a></li>
+    </ul>
+  </div>
+  <div id="addPost">
+    <h2>Add new post:</h2>
+    <h3>Title:</h3>
+    <input type="text" maxlength="100" id="title"></input>
+    <h3>Content:</h3>
+    <textarea name="boxarea" id="inBox" cols="30" rows="10"></textarea>
+    <button class="button" onclick="newPost()">Submit</button>
+  </div>
+  <h2 id="posty">Posts:</h2>
+  <div id="posts">    
+    <p id="etitle"></p>
+    <textarea id="einbox"></textarea>
+  </div>
+  <script>
+    function newPost() {
+      var title = document.getElementById("title").value;
+      var inBox = document.getElementById("inBox").value;
+      var etitle = document.getElementById("etitle").innerHTML = title;
+      var einbox = document.getElementById("einbox").innerHTML = inBox;
+    }
+  </script>
+</body>
+
+</html>
