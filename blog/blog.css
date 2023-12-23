@@ -1,55 +1,71 @@
 * {
-  box-sizing: border-box;  
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-body{  
+
+body {
   font-family: Consolas, monospace, 'Courier New', Courier;
   min-width: 400px;
-  max-width: 100%;  
+  max-width: 100%;
   overflow: auto;
   background-image: url("../assets/background.png");
 }
-#nav {    
+
+#nav {
   width: 100%;
-  padding: 8px 10% ;
-  background-color: #333333; 
-  height: auto;  
-  min-height: 45px;   
+  padding: 8px 10%;
+  background-color: #333333;
+  height: auto;
+  min-height: 45px;
 }
-#nav ul {  
-  float: right;         
+
+#nav ul {
+  float: right;
 }
-#nav ul li{
-  float: left;    
-  display: inline;        
+
+#nav ul li {
+  float: left;
+  display: inline;
 }
-#nav li a{    
+
+#nav li a {
   display: block;
-  color: #FF0099; 
-  font-size: 20px;  
+  color: #FF0099;
+  font-size: 20px;
   text-align: center;
   text-transform: uppercase;
-  padding: 5px 10px;     
+  padding: 5px 10px;
 }
+
 #nav li a:hover {
   color: white;
 }
+
 #nav li a.active {
   background-color: #FF0099;
   color: white;
 }
-@media screen and (max-width: 600px) {  
-  #nav ul li {float: none;}
-  #nav ul {float: none;}
+
+@media screen and (max-width: 600px) {
+  #nav ul li {
+    float: none;
+  }
+
+  #nav ul {
+    float: none;
+  }
 }
-#addPost{
+
+#addPost {
   margin: 50px 0 0 0;
 }
-#addPost h2{
+
+#addPost h2 {
   margin: 30px 0;
 }
-#addPost #inBox{
+
+#addPost #inBox {
   width: 80%;
   height: 150px;
   padding: 12px 20px;
@@ -60,7 +76,8 @@ body{
   background-color: #f8f8f8;
   resize: none;
 }
-#addPost #title{
+
+#addPost #title {
   width: 80%;
   height: auto;
   padding: 12px 20px;
@@ -71,7 +88,8 @@ body{
   background-color: #f8f8f8;
   resize: none;
 }
-#addPost .button{
+
+#addPost .button {
   background-color: #f8f8f8;
   border: 2px solid #ccc;
   border-radius: 4px;
@@ -84,22 +102,27 @@ body{
   margin: 20px 10%;
   cursor: pointer;
 }
+
 h1, h2, h3, h4, h5 {
   font-family: 'Pattaya', sans-serif;
   padding: 0 10%;
 }
-h1{  
-  font-size: 48px;  
-}  
-p{
-  margin: 8px;
-  padding: 0 ;
-  line-height: 1.6;  
-} 
-#posty{
-  margin: 30px 0;    
+
+h1 {
+  font-size: 48px;
 }
-#posts{
+
+p {
+  margin: 8px;
+  padding: 0;
+  line-height: 1.6;
+}
+
+#posty {
+  margin: 30px 0;
+}
+
+#posts {
   width: 80%;
   height: auto;
   padding: 12px 20px;
@@ -110,6 +133,7 @@ p{
   background-color: #f8f8f8;
   resize: none;
 }
+
 #posts #einbox {
   width: 100%;
   height: 150px;
@@ -121,10 +145,10 @@ p{
   background-color: #f8f8f8;
   resize: none;
 }
-#etitle{
+
+#etitle {
   margin: 5px 0;
   overflow: hidden;
   font-size: large;
   font-weight: bolder;
 }
-  
