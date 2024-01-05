@@ -6,60 +6,54 @@
 	<title>Word Search</title>
 </head>
 
+
 <body>
 	<h1>Word Search</h1>
-	<label for="wodLength">Word length: </label>
-	<input type="number" id="wordLength" maxlength="2" max="10" min="1" value="5">
-
-	<div class="characters">
-		<label for="knownCharacters">Enter known characters:</label>
-		<form id="characterInputs">
-			<div>
-				<label for="char1">1:</label>
-				<input type="text" id="char1" maxlength="1">
-			</div>
-			<div>
-				<label for="char2">2:</label>
-				<input type="text" id="char2" maxlength="1">
-			</div>
-			<div>
-				<label for="char3">3:</label>
-				<input type="text" id="char3" maxlength="1">
-			</div>
-			<div>
-				<label for="char4">4:</label>
-				<input type="text" id="char4" maxlength="1">
-			</div>
-			<div>
-				<label for="char5">5:</label>
-				<input type="text" id="char5" maxlength="1">
-			</div>
-			<div>
-				<label for="char6">6:</label>
-				<input type="text" id="char6" maxlength="1">
-			</div>
-			<div>
-				<label for="char7">7:</label>
-				<input type="text" id="char7" maxlength="1">
-			</div>
-			<div>
-				<label for="char8">8:</label>
-				<input type="text" id="char8" maxlength="1">
-			</div>
-			<div>
-				<label for="char9">9:</label>
-				<input type="text" id="char9" maxlength="1">
-			</div>
-			<div>
-				<label for="char10">10:</label>
-				<input type="text" id="char10" maxlength="1">
-			</div>
+	<h3>
+		This site is used to help with Cracking crime in Torn (text-based online RPG)
+	</h3>
+	<h5>
+		<b>Disclaimer:</b> the databases used right now are not 100% perfect and accurate. So be aware that even you got match to your input values it does not mean it is correct.
+	</h5>
+	
+	<div class="wordLenghts box">
+		<label for="wordLengthForm">Word length:</label>
+		<form id="wordLengthForm">
+			<!-- Generating radio buttons for word length -->			
 		</form>
 	</div>
-	<button onclick="searchWord('100K')">Search in 100K db</button>
-	<button onclick="searchWord('1M')">Search in 1M db</button>
-	<!-- <button onclick="searchWord('10M')">Search in 10M db</button> -->
 
+	<div class="characters box">
+		<label for="knownCharacters">Known characters:</label>
+		<form id="characterInputs">
+			<!-- Generating inputs for characters -->
+		</form>
+	</div>
+
+	<div class="tried box">
+		<label for="tried1">Already tried 1:</label>
+		<form id="tried1">
+			<!-- Generating inputs for already tried characters 1 -->
+		</form>
+	</div>
+
+	<div class="tried box">
+		<label for="tried2">Already tried 2:</label>
+		<form id="tried2">
+			<!-- Generating inputs for already tried characters 2 -->
+		</form>
+	</div>
+
+	<div class="buttons-counter">
+		<button onclick="searchWord('1M')">Search in 1M db</button>
+		<button onclick="searchWord('10M')">Search in 10M db </br> (can take few sec)</button>
+		<!-- <button onclick="searchWord('torn')">Search in TORN db</button> -->
+
+		<!-- <div>
+			<span>Torn DB size: </span>
+			<span class="torn-size"></span>
+		</div> -->
+	</div>
 	<div id="result"></div>
 
 	<script src="searchWord.js"></script>
