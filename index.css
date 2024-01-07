@@ -117,5 +117,27 @@ li {
 }
 
 .disabled {
-  opacity: 0.25;  
+  opacity: 0.25;
+}
+
+#loading {
+  display: flex;  
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  text-align: center;
+  height: 100px;
+  width: 100px;
+  border: 6px solid;
+  border-color: white transparent white transparent;
+  border-radius: 50%;
+  animation: spin 1.3s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

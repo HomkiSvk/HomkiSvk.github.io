@@ -14,6 +14,8 @@ function searchWord(dbName) {
     window.alert("You need to select word length");
   }
 
+  document.getElementById('spinner').classList.add('spinner')
+
   let knownCharacters = '';
   for (let i = 1; i <= wordLength; i++) {
     const char = document.getElementById(`${charInputs}-${i}`).value.toUpperCase();
@@ -28,10 +30,14 @@ function searchWord(dbName) {
     .then(data => {
       const words = data.split('\n');
       const matchingWords = words.filter(word => new RegExp(regexPattern).test(word.toUpperCase()));
-      // updateCounter();
       displayResult(matchingWords);
+      document.getElementById('spinner').classList.remove('spinner');
     })
-    .catch(error => console.error('Error fetching words:', error));
+    .catch(error => {
+      console.error('Error fetching words:', error)
+      document.getElementById('spinner').classList.remove('spinner');
+    }
+    );
 }
 
 function displayResult(matchingWords) {
