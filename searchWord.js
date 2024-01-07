@@ -1,9 +1,12 @@
 
 var counterContainer = document.querySelector(".search-counter");
+const numChars = 10; // Number of character inputs
+const charInputs = 'charInputs';
+const triedChars1 = 'triedChars1';
+const triedChars2 = 'triedChars2';
 
 window.onload = createOptions();
 
-// Function to search for a matching word
 function searchWord(dbName) {
   let wordLength = document.querySelector('input[name="wordLength"]:checked')?.value;
 
@@ -13,19 +16,18 @@ function searchWord(dbName) {
 
   let knownCharacters = '';
   for (let i = 1; i <= wordLength; i++) {
-    const char = document.getElementById(`char${i}`).value;
+    const char = document.getElementById(`${charInputs}-${i}`).value.toUpperCase();
     knownCharacters += (char !== '') ? escapeRegExp(char) : checkTried(i); // If no character is provided, use a wildcard '.'    
   }
 
   // Convert known characters to regex pattern
   const regexPattern = `^${knownCharacters}$`;
 
-  console.log("🚀 ~ file: searchWord.js:24 ~ searchWord ~ regexPattern:", regexPattern)
   fetch('./files/ignis-' + dbName + '.txt')
     .then(response => response.text())
     .then(data => {
       const words = data.split('\n');
-      const matchingWords = words.filter(word => new RegExp(regexPattern).test(word));
+      const matchingWords = words.filter(word => new RegExp(regexPattern).test(word.toUpperCase()));
       // updateCounter();
       displayResult(matchingWords);
     })
@@ -56,8 +58,7 @@ function displayResult(matchingWords) {
 function createWordLengthOptions() {
   const wordLengthOptions = document.getElementById('wordLengthForm');
 
-  for (let i = 3; i <= 10; i++) {
-    const divContainer = document.createElement('div');
+  for (let i = 3; i <= numChars; i++) {
     const radioBtn = document.createElement('input');
     radioBtn.type = 'radio';
     radioBtn.name = 'wordLength';
@@ -65,60 +66,60 @@ function createWordLengthOptions() {
     radioBtn.value = i;
 
     const label = document.createElement('label');
-    label.textContent = `${i}:`;
+    label.textContent = `${i}`;
+    label.htmlFor = radioBtn.id;
 
-    divContainer.appendChild(label);
-    divContainer.appendChild(radioBtn);
-
-    wordLengthOptions.appendChild(divContainer);
+    wordLengthOptions.appendChild(radioBtn);
+    wordLengthOptions.appendChild(label);
   }
+  disableInputs(0);
+
+  wordLengthOptions.addEventListener('change', function (event) {
+    event.preventDefault();
+    disableInputs(event.target.value);
+  })
 }
 
 // Function to create character input fields
 function createInputFields() {
-  const characterInputs = document.getElementById('characterInputs');
-  const tried1 = document.getElementById('tried1');
-  const tried2 = document.getElementById('tried2');
+  const characterInputs = document.getElementById(charInputs);
+  const tried1 = document.getElementById(triedChars1);
+  const tried2 = document.getElementById(triedChars2);
 
-  const numChars = 10; // Number of character inputs
-  for (let i = 1; i <= numChars; i++) {
-    characterInputs.appendChild(createInputContainer(i, 'char'));
-    tried1.appendChild(createInputContainer(i, 'tried1char'));
-    tried2.appendChild(createInputContainer(i, 'tried2char'));
+  for (let i = 1; i <= numChars + 1; i++) {
+    characterInputs.appendChild(createInputContainer(i, charInputs));
+    tried1.appendChild(createInputContainer(i, triedChars1));
+    tried2.appendChild(createInputContainer(i, triedChars2));
   }
-
-  const clearButton = document.createElement('button');
-  clearButton.textContent = 'X';
-  clearButton.classList.add('clear-button')
-
-  // characterInputs.appendChild(clearButton);
 }
 
 function createInputContainer(i, id) {
   const divContainer = document.createElement('div');
-  const label = document.createElement('label');
-  label.textContent = `${i}:`;
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.id = `${id}${i}`;
-  input.maxLength = 1;
+  if (i === numChars + 1) {
+    const clearButton = document.createElement('button');
+    clearButton.textContent = 'Clear';
+    clearButton.classList.add('clear-button')
+    clearButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      resetForm(id)
+    });
 
-  divContainer.appendChild(label);
-  divContainer.appendChild(input);
+    divContainer.appendChild(clearButton);
+  } else {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = `${id}-${i}`;
+    input.maxLength = 1;
+
+    const label = document.createElement('label');
+    label.textContent = `${i}:`;
+    label.htmlFor = input.id;
+
+    divContainer.appendChild(label);
+    divContainer.appendChild(input);
+  }
 
   return divContainer;
-}
-
-function updateCounter() {
-  // var wordsSearched = Number(counterContainer.innerHTML)
-  // if (wordsSearched) {
-  //   wordsSearched = Number(wordsSearched) + 1;
-  //   localStorage.setItem("words_searched", wordsSearched);
-  // } else {
-  //   wordsSearched = 1;
-  //   localStorage.setItem("words_searched", 1);
-  // }
-  // counterContainer.innerHTML = wordsSearched;
 }
 
 // Create character input fields and word length radio buttons when the page loads
@@ -129,8 +130,8 @@ function createOptions() {
 
 // Function to check if there is already tried character and remove that from regex search
 function checkTried(i) {
-  const triedChar1 = document.getElementById(`tried1char${i}`).value;
-  const triedChar2 = document.getElementById(`tried2char${i}`).value;
+  const triedChar1 = document.getElementById(`${triedChars1}-${i}`).value.toUpperCase();
+  const triedChar2 = document.getElementById(`${triedChars2}-${i}`).value.toUpperCase();
   let regPattern = '';
 
   if (triedChar1 !== '' || triedChar2 !== '') {
@@ -144,7 +145,7 @@ function checkTried(i) {
     regPattern += ']).';
   } else {
     regPattern = '.';
-  } 
+  }
 
   return regPattern;
 }
@@ -153,3 +154,38 @@ function checkTried(i) {
 function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escaping special characters
 }
+
+function disableInputs(wordLength) {
+  let inputChars = document.getElementById(charInputs);
+  let tried1 = document.getElementById(triedChars1);
+  let tried2 = document.getElementById(triedChars2);
+
+  for (let i = numChars - 1; i >= 0; i--) {
+    const disable = i < wordLength ? false : true;
+
+    inputChars[i].disabled = disable;
+    tried1[i].disabled = disable;
+    tried2[i].disabled = disable;
+
+    inputChars[i].classList.toggle('disabled', i + 1 > wordLength);
+    tried1[i].classList.toggle('disabled', i + 1 > wordLength);
+    tried2[i].classList.toggle('disabled', i + 1 > wordLength);
+  }
+}
+
+function resetForm(formName) {
+  const form = document.getElementById(formName);
+  form.reset();
+}
+
+// function updateCounter() {
+//   var wordsSearched = Number(counterContainer.innerHTML)
+//   if (wordsSearched) {
+//     wordsSearched = Number(wordsSearched) + 1;
+//     localStorage.setItem("words_searched", wordsSearched);
+//   } else {
+//     wordsSearched = 1;
+//     localStorage.setItem("words_searched", 1);
+//   }
+//   counterContainer.innerHTML = wordsSearched;
+// }

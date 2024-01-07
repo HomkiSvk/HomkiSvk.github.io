@@ -11,20 +11,15 @@ h1, h3, h5 {
   text-align: center;
 }
 
-label {  
-  /* margin-left: 2rem;   */
-  cursor: pointer;
-}
-
-input[type="text"] {
-  width: 1.5rem;
-  padding: 6px;
-  background-color: lightgray;
-}
-
 form {
   display: grid;
-  grid-template-columns: repeat(11, 1fr);  
+  grid-template-columns: repeat(30, 1fr);
+}
+
+form:not(#wordLengthForm) label {
+  display: inline-block;
+  width: 1.3rem;
+  cursor: pointer;
 }
 
 input[type="text"],
@@ -33,6 +28,20 @@ button {
   border-radius: 5px;
   border: 2px solid #ccc;
   font-size: 16px;
+}
+
+input[type="text"] {
+  width: 1.5rem;
+  padding: 6px;
+  background-color: lightgray;
+}
+
+.characters input[type="text"] {
+  border: 2px solid #80e040;
+}
+
+.tried input[type="text"] {
+  border: 2px solid #e04040;
 }
 
 button {
@@ -44,6 +53,29 @@ button {
 
 button:hover {
   background-color: #45a049;
+}
+
+/* Styling for radio buttons */
+input[type="radio"] {
+  display: none;
+}
+
+#wordLengthForm label {
+  display: inline-block;
+  background-color: lightgray;
+  padding: 0.4rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  border: 2px solid #1d1d1d;
+  border-radius: 20px;
+  transition: all 0.3s;
+  font-size: 18px;
+  text-align: center;
+}
+
+/* Custom styling when radio button is checked */
+#wordLengthForm input[type="radio"]:checked+label {
+  background-color: #39b934;
 }
 
 #result {
@@ -63,25 +95,6 @@ li {
   margin-bottom: 5px;
 }
 
-/* Styling for radio buttons */
-input[type="radio"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-color: lightgray;
-  appearance: none;  
-  width: 1.5rem;
-  height: 1.5rem;
-  border: 2px solid #ccc;
-  border-radius: 20px;
-  outline: none;
-  cursor: pointer;
-}
-
-/* Custom styling when radio button is checked */
-input[type="radio"]:checked {
-  background-color: #39b934;
-}
-
 .box {
   margin: 10px 0px;
 }
@@ -96,17 +109,13 @@ input[type="radio"]:checked {
 }
 
 .clear-button {
-  background-color: crimson;
-}
-
-.clear-button:hover {
   background-color: firebrick;
 }
 
-.characters input[type="text"]{
-  border: 2px solid #80e040;
+.clear-button:hover {
+  background-color: crimson;
 }
 
-.tried input[type="text"] {
-  border: 2px solid #e04040;
+.disabled {
+  opacity: 0.25;  
 }
