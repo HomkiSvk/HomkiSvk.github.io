@@ -1,6 +1,7 @@
 
 var counterContainer = document.querySelector(".search-counter");
 const numChars = 10; // Number of character inputs
+const resultDisplayLimit = 500; // Maximum number of words to display
 const charInputs = 'charInputs';
 const triedChars1 = 'triedChars1';
 const triedChars2 = 'triedChars2';
@@ -17,9 +18,11 @@ function searchWord(dbName) {
   document.getElementById('spinner').classList.add('spinner')
 
   let knownCharacters = '';
+  let charDict = {};
   for (let i = 1; i <= wordLength; i++) {
     const char = document.getElementById(`${charInputs}-${i}`).value.toUpperCase();
-    knownCharacters += (char !== '') ? escapeRegExp(char) : checkTried(i); // If no character is provided, use a wildcard '.'    
+    knownCharacters += (char !== '') ? escapeRegExp(char) : checkTried(i); // If no character is provided, use a wildcard '.'   
+    charDict[i - 1] = char;
   }
 
   // Convert known characters to regex pattern
@@ -30,7 +33,7 @@ function searchWord(dbName) {
     .then(data => {
       const words = data.split('\n');
       const matchingWords = words.filter(word => new RegExp(regexPattern).test(word.toUpperCase()));
-      displayResult(matchingWords);
+      displayResult(matchingWords, charDict);
       document.getElementById('spinner').classList.remove('spinner');
     })
     .catch(error => {
@@ -40,20 +43,38 @@ function searchWord(dbName) {
     );
 }
 
-function displayResult(matchingWords) {
+function displayResult(matchingWords, charDict) {
   const resultDiv = document.getElementById('result');
+  const suggestionDiv = document.getElementById('suggestion');
   resultDiv.innerHTML = '';
+  suggestionDiv.innerHTML = '';
 
   if (matchingWords.length > 0) {
     const resultList = document.createElement('ul');
     matchingWords.sort();
 
-    matchingWords.forEach(word => {
+
+    matchingWords.slice(0,resultDisplayLimit).forEach(word => {
       const listItem = document.createElement('li');
       listItem.textContent = word;
       resultList.appendChild(listItem);
     });
 
+    const guess = nextGuess(matchingWords, charDict);
+    let hint = "Next most common character (" + Math.round((guess.count / matchingWords.length) * 100) + "%): ";
+    console.log(JSON.stringify(guess));
+    console.log(JSON.stringify(charDict));
+    for (let i = 0; i < matchingWords[0].length; i++) {
+      if (i === guess.index) {
+        hint += '<span class="boxed">' + guess.character + '</span> '
+      } else if( charDict[i] === "") {
+        hint += "_ ";
+      } else {
+        hint += charDict[i];
+      }
+    }
+    suggestionDiv.innerHTML = hint;
+    
     resultDiv.appendChild(resultList);
   } else {
     resultDiv.textContent = 'No matching words found.';
@@ -182,6 +203,39 @@ function disableInputs(wordLength) {
 function resetForm(formName) {
   const form = document.getElementById(formName);
   form.reset();
+}
+
+// Determine a suggestion for the next most likely character
+function nextGuess(words, charDict) {
+  console.log(JSON.stringify(charDict));
+  const searchLocations = [];
+  for (let i = 0; i < words[0].length; i++) {
+    if (charDict[i] === "") {
+      searchLocations.push(i);
+    }
+  }
+  const nextDict = {};
+  let key = "";
+  words.forEach((word) => {
+    for (let i = 0; i < searchLocations.length; i++) {
+      key = word[searchLocations[i]] + "_" + searchLocations[i];
+      if (key in nextDict) {
+        nextDict[key] = nextDict[key] + 1;
+      } else {
+        nextDict[key] = 1;
+      }
+    }
+  });
+  const keys = Object.keys(nextDict);
+  let minKey = keys[0];
+  let min = nextDict[minKey];
+  for (let i = 1; i < keys.length; i++) {
+    if (nextDict[keys[i]] > min) {
+      minKey = keys[i];
+      min = nextDict[minKey];
+    }
+  }
+  return {"character": minKey[0], "index": parseInt(minKey.substring(2)), "count": min};
 }
 
 // function updateCounter() {
